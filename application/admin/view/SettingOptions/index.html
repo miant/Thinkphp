@@ -1,0 +1,98 @@
+{extend name="layout/common" /}
+
+{block name="content" }
+
+    <div id="content">
+        <div class="page-header">
+            <div class="container-fluid">
+                <div class="pull-right">
+                    <a href="{{:url('add')}}" data-toggle="tooltip" title="新增" class="btn btn-primary"> <i class="fa fa-plus"></i>
+                    </a>
+
+                    <button type="button" data-toggle="tooltip" title="删除" class="btn btn-danger" onclick="$('input[name*=\'selected\']:checked').size()>0 && confirm('确认？') ? $('#form-SettingOption').submit() : false;"> <i class="fa fa-trash-o"></i>
+                    </button>
+
+                </div>
+                <h1>配置项选项管理</h1>
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="{U('')}">首页</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">配置项选项列表</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-list"></i>
+                        配置项选项列表
+                    </h3>
+                </div>
+                <div class="panel-body">
+                  
+                    <form action="{{:url('delete')}}" method="post" enctype="multipart/form-data" id="form-SettingOption">
+                        <input type="hidden" id="input-operate_type" name="operate_type" value="">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <td style="width: 1px;" class="text-center">
+                                            <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" />
+                                        </td>
+                                                                                <td class="text-left">
+                                        {if condition="$order['field'] eq 'setting_option_id' AND $order['type'] eq 'asc'"}
+                                            <a href="{{:url('index', $filter+['field'=>'setting_option_id', 'type'=>'desc'])}}" class="asc">setting_option_id</a>
+                                        {elseif condition="$order['field'] eq 'setting_option_id' AND $order['type'] eq 'desc'" /}
+                                            <a href="{{:url('index', $filter+['field'=>'setting_option_id', 'type'=>'asc'])}}" class="desc">setting_option_id</a>
+                                        {else /}
+                                            <a href="{{:url('index', $filter+['field'=>'setting_option_id', 'type'=>'asc'])}}" class="">setting_option_id</a>
+                                        {/if}
+                                        </td>                                        <td class="text-left">
+                                        {if condition="$order['field'] eq 'option_title' AND $order['type'] eq 'asc'"}
+                                            <a href="{{:url('index', $filter+['field'=>'option_title', 'type'=>'desc'])}}" class="asc">option_title</a>
+                                        {elseif condition="$order['field'] eq 'option_title' AND $order['type'] eq 'desc'" /}
+                                            <a href="{{:url('index', $filter+['field'=>'option_title', 'type'=>'asc'])}}" class="desc">option_title</a>
+                                        {else /}
+                                            <a href="{{:url('index', $filter+['field'=>'option_title', 'type'=>'asc'])}}" class="">option_title</a>
+                                        {/if}
+                                        </td>                                        <td class="text-left">
+                                        {if condition="$order['field'] eq 'setting_id' AND $order['type'] eq 'asc'"}
+                                            <a href="{{:url('index', $filter+['field'=>'setting_id', 'type'=>'desc'])}}" class="asc">setting_id</a>
+                                        {elseif condition="$order['field'] eq 'setting_id' AND $order['type'] eq 'desc'" /}
+                                            <a href="{{:url('index', $filter+['field'=>'setting_id', 'type'=>'asc'])}}" class="desc">setting_id</a>
+                                        {else /}
+                                            <a href="{{:url('index', $filter+['field'=>'setting_id', 'type'=>'asc'])}}" class="">setting_id</a>
+                                        {/if}
+                                        </td>
+                                        <td class="text-right">管理</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {volist name="data" id="row"}
+                                        <tr>
+                                            <td class="text-center">
+                                                <input type="checkbox" name="selected[]" value="{{$row['setting_option_id']}}" />
+                                            </td>
+                                                                                        <td class="text-left">{{$row['setting_option_id']}}</td>                                            <td class="text-left">{{$row['option_title']}}</td>                                            <td class="text-left">{{$row['setting_id']}}</td>
+                                            <td class="text-right">
+                                                <a href="{{:url('edit', ['setting_option_id'=>
+                                                    $row['setting_option_id']])}}" data-toggle="tooltip" title="编辑" class="btn btn-primary">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {/volist}
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                    <div class="row">{{$data->render()}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}

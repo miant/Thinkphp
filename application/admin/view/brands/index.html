@@ -1,0 +1,119 @@
+{extend name="layout/common" /}
+
+{block name="content" }
+
+    <div id="content">
+        <div class="page-header">
+            <div class="container-fluid">
+                <div class="pull-right">
+                    <a href="{{:url('add')}}" data-toggle="tooltip" title="新增" class="btn btn-primary"> <i class="fa fa-plus"></i>
+                    </a>
+
+                    <button type="button" data-toggle="tooltip" title="删除" class="btn btn-danger" onclick="$('input[name*=\'selected\']:checked').size()>0 && confirm('确认？') ? $('#form-brand').submit() : false;"> <i class="fa fa-trash-o"></i>
+                    </button>
+
+                </div>
+                <h1>品牌管理</h1>
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="{U('')}">首页</a>
+                    </li>
+                    <li>
+                        <a href="javascript:;">品牌列表</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <i class="fa fa-list"></i>
+                        品牌列表
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    <form action="{{:url('index')}}" method="GET">
+                    <div class="well">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label" for="input-title">品牌名称</label>
+                                    <input type="text" name="filter_title" value="{{$filter['filter_title']}}" placeholder="品牌名称" id="input-title" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <button type="submit" id="button-filter" class="btn btn-primary pull-right">
+                                    <i class="fa fa-search"></i>
+                                    筛选
+                            </button>
+                            </div>
+                        </div>
+                    </div>
+                    </form>
+
+                    <form action="{{:url('delete')}}" method="post" enctype="multipart/form-data" id="form-brand">
+                        <input type="hidden" id="input-operate_type" name="operate_type" value="">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <td style="width: 1px;" class="text-center">
+                                            <input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" />
+                                        </td>
+                                        <td class="text-center">LOGO</td>
+                                        <td class="text-left">
+                                        {if condition="$order['field'] eq 'title' AND $order['type'] eq 'asc'"}
+                                            <a href="{{:url('index', $filter+['field'=>'title', 'type'=>'desc'])}}" class="asc">品牌</a>
+                                        {elseif condition="$order['field'] eq 'title' AND $order['type'] eq 'desc'" /}
+                                            <a href="{{:url('index', $filter+['field'=>'title', 'type'=>'asc'])}}" class="desc">品牌</a>
+                                        {else /}
+                                            <a href="{{:url('index', $filter+['field'=>'title', 'type'=>'asc'])}}" class="">品牌</a>
+                                        {/if}
+                                        </td>
+                                        <td class="text-left">
+                                        {if condition="$order['field'] eq 'sort_number' AND $order['type'] eq 'asc'"}
+                                            <a href="{{:url('index', $filter+['field'=>'sort_number', 'type'=>'desc'])}}" class="asc">排序</a>
+                                        {elseif condition="$order['field'] eq 'sort_number' AND $order['type'] eq 'desc'" /}
+                                            <a href="{{:url('index', $filter+['field'=>'sort_number', 'type'=>'asc'])}}" class="desc">排序</a>
+                                        {else /}
+                                            <a href="{{:url('index', $filter+['field'=>'sort_number', 'type'=>'asc'])}}" class="">排序</a>
+                                        {/if}
+                                        </td>
+
+                                        <td class="text-right">管理</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {volist name="data" id="row"}
+                                        <tr>
+                                            <td class="text-center">
+                                                <input type="checkbox" name="selected[]" value="{{$row['brand_id']}}" />
+                                            </td>
+                                            <td class="text-center">
+                                                <img src="{if condition="$row['logo']"}/static/thumb/{{$row['logo']}}{else /}/static/admin/image/avatar.png{/if}" alt="HEAD" class="img-thumbnail" style="max-width: 40px"/>
+                                            </td>
+                                            <td class="text-left">{{$row['title']}}</td>
+
+                                            <td class="text-left">{{$row['sort_number']}}</td>
+                                            <td class="text-right">
+                                                <a href="{{:url('edit', ['brand_id'=>
+                                                    $row['brand_id']])}}" data-toggle="tooltip" title="编辑" class="btn btn-primary">
+                                                    <i class="fa fa-pencil"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {/volist}
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                    <div class="row">{{$data->render()}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{/block}
