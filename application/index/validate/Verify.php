@@ -7,13 +7,13 @@ use think\Validate;
 class Verify extends Validate
 {
 	protected $rule = [
-					'name' =>'require|unique|chsDash|length:6,20',
-					'email'=>'require|email|unique',
+					'name' =>'require|unique:member|chsDash|length:6,20',
+					'email'=>'require|email|unique:member',
 					'password' =>"require|length:6,20|alphaSpecial|strong:",
 					'repassword'=>'require|confirm:password',
 					'is_newsletter' =>'require|in:0,1',
 					'agree' => 'accepted',
-					'title' => 'require|unique',
+					'title' => 'require|unique:member',
 					'sort_number' => 'number'
 				];
 	protected $message = [
